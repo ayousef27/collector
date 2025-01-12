@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Car List</h1>
+
+{% for car in cars %}
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ car.name }}</span>
+      <p>model: {{ car.model }}</p>
+      <p>color: {{ car.color }}</p>
+      
+      <p>production: {{ car.production }}</p>
+    </div>
+  </div>
+{% endfor %}
+
+{% endblock %}
