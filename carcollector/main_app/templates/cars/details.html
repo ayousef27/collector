@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block content %}
+<h1>car Details</h1>
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">{{ car.name }}</span>
+    <p>model: {{ car.model }}</p>
+    <p>Description: {{ car.color }}</p>
+    <p>production: {{ car.production }}</p>
+  </div>
+  <div>
+    {% load static %}
+    <img
+      src="{% static car.image|cut:'main_app/static/' %}"
+      width="100px"
+      height="100px"
+    />
+  </div>
+</div>
+{% endblock %}
