@@ -23,4 +23,5 @@ urlpatterns = [
 
      
     path('cars/<int:car_id>/unassoc_medal/<int:medal_id>/', views.unassoc_medal, name='unassoc_medal'),
+    path('accounts/signup/', views.signup, name='signup'),
 ]

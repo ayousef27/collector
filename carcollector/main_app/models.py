@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -40,8 +40,9 @@ class Oil(models.Model):
         ('S', 'Super')
     )
     date = models.DateField()
-    type = models.CharField(max_length=1, choices=OILS)  
+    type = models.CharField(max_length=1, choices=OILS)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         return f"{self.get_type_display()} on {self.date}"
