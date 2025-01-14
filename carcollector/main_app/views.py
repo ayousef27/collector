@@ -22,16 +22,19 @@ def about(request):
     
     return render(request, 'about.html')
 
+@login_required
 def cars_index(request):
     cars = Car.objects.all()
     return render(request, 'cars/index.html', { 'cars': cars })
 
+@login_required
 def cars_detail(request, car_id):
     car = Car.objects.get(id=car_id)
     oil_form = OilForm()
     medals_car_doesnt_have = Medal.objects.exclude(id__in = car.medals.all().values_list('id'))
     return render(request, 'cars/details.html', {'car': car, 'oil_form': oil_form, 'medals': medals_car_doesnt_have})
 
+@login_required
 def add_oil(request, car_id):
   
   form = OilForm(request.POST)
@@ -43,13 +46,16 @@ def add_oil(request, car_id):
     new_oil.save()
   return redirect('details', car_id=car_id)
 
+@login_required
 def assoc_medal(request, car_id, medal_id):
     Car.objects.get(id=car_id).medals.add(medal_id)
     return redirect('details', car_id = car_id)
 
+@login_required
 def unassoc_medal(request, car_id, medal_id):
     Car.objects.get(id=car_id).medals.remove(medal_id)
     return redirect('details', car_id = car_id)
+
 
 def signup(request):
     error_message = ''
@@ -67,7 +73,7 @@ def signup(request):
     return render(request, 'registration/signup.html', context)
     
 
-class CarCreate(CreateView):
+class CarCreate(LoginRequiredMixin,CreateView):
   model = Car
   fields = ['name', 'model', 'color', 'production']
   def form_valid(self, form):
@@ -78,29 +84,29 @@ class CarCreate(CreateView):
 
 
 
-class CarUpdate(UpdateView):
+class CarUpdate(LoginRequiredMixin, UpdateView):
   model = Car
   
   fields = ['model', 'color', 'production']
 
-class CarDelete(DeleteView):
+class CarDelete(LoginRequiredMixin, DeleteView):
   model = Car
   success_url = '/cars/'
 
-class MedalList(ListView):
+class MedalList(LoginRequiredMixin, ListView):
     model = Medal
 
-class MedalDetail(DetailView):
+class MedalDetail(LoginRequiredMixin, DetailView):
     model = Medal
 
-class MedalCreate(CreateView):
+class MedalCreate(LoginRequiredMixin, CreateView):
     model = Medal
     fields = '__all__'
 
-class MedalUpdate(UpdateView):
+class MedalUpdate(LoginRequiredMixin, UpdateView):
     model = Medal
     fields = ['name', 'color']
 
-class MedalDelete(DeleteView):
+class MedalDelete(LoginRequiredMixin, DeleteView):
     model = Medal
     success_url = '/medals/'
