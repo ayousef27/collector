@@ -43,6 +43,63 @@
 </div>
 </div>
 
+<hr>
+
+  <div class="row">
+    <div class="col s6">
+      <h3>{{ car.name }}</h3>
+
+      {% if car.medals.count %}
+        {% for medal in car.medals.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                A 
+                <span style="color: {{ medal.color }}"> {{ medal.color }} </span> {{ medal.name }}
+              </span>
+            </div>
+            <div class="card-action">
+              <form action="{% url 'unassoc_medal' car.id medal.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn">Remove</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+          <h5>No Medals :(</h5>
+      {% endif %}
+
+    </div>
+
+    <div class="col s6">
+      <h3>Available medals</h3>
+
+      {% if medals.count %}
+        {% for medal in medals.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{medal.color}}"> {{medal.color}}</span> {{medal.name}}
+            </span>
+          </div>
+
+          <div class="card-action">
+            <form action="{% url 'assoc_medal' car.id medal.id%}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+        {% endfor%}
+      {% else %}
+      <h5>{{car.name }} already has all medals available</h5>
+      {% endif %}
+
+    </div>
+  </div>
+
+
 <script>
   var dateEl = document.getElementById('id_date')
   M.Datepicker.init(dateEl, {
@@ -51,7 +108,7 @@
     setDefaultDate: true,
     autoClose: true
   })
-  var selectEl = document.getElementById('id_type');
+  let selectEl = document.getElementById('id_type');
   M.FormSelect.init(selectEl)
 </script>
 {% endblock %}

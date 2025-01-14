@@ -4,7 +4,15 @@ from django.urls import reverse
 
 
 # Create your models here.
+class Medal(models.Model):
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('medals_detail', kwargs={'pk': self.id})
 
 
 
@@ -15,6 +23,7 @@ class Car(models.Model):
     color = models.TextField(max_length=250)
     production = models.IntegerField()
     image = models.ImageField(upload_to='main_app/static/uploads/', default='')
+    medals = models.ManyToManyField(Medal)
 
 
     def __str__(self):
