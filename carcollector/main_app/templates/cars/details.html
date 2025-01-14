@@ -15,5 +15,43 @@
       height="100px"
     />
   </div>
+  <div class="card-action">
+    <a href="{% url 'cars_update' car.id %}">Edit</a>
+    <a href="{% url 'cars_delete' car.id %}">Delete</a>
+  </div>
 </div>
+
+<div class="col s6">
+  <form method="post" action="{% url 'add_oil' car.id %}">
+    {% csrf_token %}
+    {{ oil_form.as_p }}
+    <input type="submit" class="btn" value="change">
+  </form>
+  <table class="striped">
+    <thead>
+      <tr><th>Date</th><th>type</th></tr>
+    </thead>
+    <tbody>
+      {% for oil in car.oil_set.all %}
+        <tr>
+          <td>{{oil.date}}</td>
+          <td>{{oil.get_type_display}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+
+<script>
+  var dateEl = document.getElementById('id_date')
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  })
+  var selectEl = document.getElementById('id_type');
+  M.FormSelect.init(selectEl)
+</script>
 {% endblock %}
